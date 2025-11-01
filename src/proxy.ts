@@ -1,16 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://builderlms.vercel.app",
-];
-
-const corsOptions = {
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
-};
-
-const authRoutes = ["/sign-in", "/sign-up"];
+import {
+  ALLOWED_ORIGINS,
+  AUTH_ROUTES,
+  CORS_OPTIONS,
+  DEFAULT_SIGN_IN_REDIRECT,
+} from "./constant";
 
 export function proxy(request: NextRequest) {
   // ============================== protecting routes ==============================
@@ -20,11 +14,11 @@ export function proxy(request: NextRequest) {
   // === get token from cookie ===
   const token = request.cookies.get("token")?.value;
 
-  // === check if route is protected (starts with /app) ===
-  const isProtectedRoute = pathname.startsWith("/app");
+  // === check if route is protected (starts with /dashboard) ===
+  const isProtectedRoute = pathname.startsWith(DEFAULT_SIGN_IN_REDIRECT);
 
   // === check if route is auth route ===
-  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
+  const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
 
   // === redirect to sign-in if accessing protected route without token ===
   if (isProtectedRoute && !token) {
@@ -32,10 +26,10 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(signInUrl);
   }
 
-  // === redirect to app if accessing auth route with token ===
+  // === redirect to DEFAULT_SIGN_IN_REDIRECT if accessing auth route with token ===
   if (isAuthRoute && token) {
-    const appUrl = new URL("/app", request.url);
-    return NextResponse.redirect(appUrl);
+    const dashboardUrl = new URL(DEFAULT_SIGN_IN_REDIRECT, request.url);
+    return NextResponse.redirect(dashboardUrl);
   }
 
   // ============================== handling cors ==============================
@@ -43,7 +37,7 @@ export function proxy(request: NextRequest) {
   // === handle CORS for API routes ===
   if (pathname.startsWith("/api")) {
     const origin = request.headers.get("origin") ?? "";
-    const isAllowedOrigin = allowedOrigins.includes(origin);
+    const isAllowedOrigin = ALLOWED_ORIGINS.includes(origin);
 
     // === handle preflighted requests ===
     const isPreflight = request.method === "OPTIONS";
@@ -51,7 +45,7 @@ export function proxy(request: NextRequest) {
     if (isPreflight) {
       const preflightHeaders = {
         ...(isAllowedOrigin && { "Access-Control-Allow-Origin": origin }),
-        ...corsOptions,
+        ...CORS_OPTIONS,
       };
       return NextResponse.json({}, { headers: preflightHeaders });
     }
@@ -68,7 +62,7 @@ export function proxy(request: NextRequest) {
       response.headers.set("Access-Control-Allow-Origin", origin);
     }
 
-    Object.entries(corsOptions).forEach(([key, value]) => {
+    Object.entries(CORS_OPTIONS).forEach(([key, value]) => {
       response.headers.set(key, value);
     });
 
@@ -80,5 +74,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/:path*", "/app/:path*", "/sign-in", "/sign-up"],
+  matcher: ["/api/:path*", "/dashboard/:path*", "/sign-in", "/sign-up"],
 };
