@@ -16,13 +16,16 @@ import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import { authApi } from "@/http/auth";
+import { toast } from "sonner";
 
 const signinSchema = z.object({
   email: z.string().email("Invalid email address").trim(),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-type SignInFormValues = z.infer<typeof signinSchema>;
+export type SignInFormValues = z.infer<typeof signinSchema>;
 
 export const SignInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,13 +33,29 @@ export const SignInForm = () => {
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "hia@mail.com",
+      password: "123456",
     },
   });
 
+  // === sign in mutation ===
+  const { mutate, isPending } = useMutation({
+    mutationFn: authApi.signIn,
+    onSuccess: () => {
+      toast.success("Signin Successful");
+      window.location.href = "/app";
+    },
+    onError: (error: any) => {
+      console.log("err", error);
+      toast.error(
+        error?.response?.data?.message || "Signin failed! Try again."
+      );
+    },
+  });
+
+  // === handle sign in ===
   const handleSignIn = (values: SignInFormValues) => {
-    console.log("SIGN IN PAYLOAD:", values);
+    mutate(values);
   };
 
   return (
@@ -100,7 +119,7 @@ export const SignInForm = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={isPending}>
               Sign In
             </Button>
 
@@ -109,6 +128,7 @@ export const SignInForm = () => {
               <Link
                 href="/sign-up"
                 className="underline underline-offset-4 hover:text-fuchsia-500"
+                aria-disabled={isPending}
               >
                 Sign Up Now
               </Link>

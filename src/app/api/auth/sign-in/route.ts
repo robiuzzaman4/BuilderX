@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 const JWT_EXPIRATION = 7 * 24 * 60 * 60; // 7 days
 
-export async function POST(request: Request) {
+export async function POST(request: Request, res: Response) {
   try {
     // === get payload and validate ===
     const payload = await request.json();
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     return new Response(
       JSON.stringify({
         success: true,
-        message: "Login successful.",
+        message: "Sign In successful.",
         token: token,
         user: userResponseData,
       }),
@@ -96,13 +96,13 @@ export async function POST(request: Request) {
       }
     );
   } catch (error: any) {
-    console.error("User login failed:", error);
+    console.error("User Sign In failed:", error);
 
     // === send err response ===
     return Response.json(
       {
         success: false,
-        message: "Internal Server Error during user login.",
+        message: "Internal Server Error during user sign in.",
         error: error.message || "Unknown error",
       },
       { status: 500 }
