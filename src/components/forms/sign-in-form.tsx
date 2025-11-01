@@ -13,12 +13,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { authApi } from "@/http/auth";
 import { toast } from "sonner";
+import { DEFAULT_SIGN_IN_REDIRECT } from "@/constant";
 
 const signinSchema = z.object({
   email: z.string().email("Invalid email address").trim(),
@@ -43,7 +44,7 @@ export const SignInForm = () => {
     mutationFn: authApi.signIn,
     onSuccess: () => {
       toast.success("Signin Successful");
-      window.location.href = "/app";
+      window.location.href = DEFAULT_SIGN_IN_REDIRECT;
     },
     onError: (error: any) => {
       console.log("err", error);
@@ -120,7 +121,11 @@ export const SignInForm = () => {
             />
 
             <Button type="submit" className="w-full" disabled={isPending}>
-              Sign In
+              {isPending ? (
+                <Loader className="size-4 animate-spin" />
+              ) : (
+                "Sign In"
+              )}
             </Button>
 
             <p className="text-sm text-muted-foreground">

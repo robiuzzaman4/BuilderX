@@ -13,9 +13,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import { authApi } from "@/http/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const signUpSchema = z.object({
   name: z.string().min(1, "Name is required").trim(),
@@ -23,9 +27,12 @@ const signUpSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-type SignUpFormValues = z.infer<typeof signUpSchema>;
+export type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export const SignUpForm = () => {
+  // === router ===
+  const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<SignUpFormValues>({
@@ -37,8 +44,24 @@ export const SignUpForm = () => {
     },
   });
 
+  // === sign up mutation ===
+  const { mutate, isPending } = useMutation({
+    mutationFn: authApi.signUp,
+    onSuccess: () => {
+      toast.success("Signup Successful");
+      router.replace("/sign-in");
+    },
+    onError: (error: any) => {
+      console.log("err", error);
+      toast.error(
+        error?.response?.data?.message || "Signup failed! Try again."
+      );
+    },
+  });
+
+  // === handle sign up ===
   const handleSignUp = (values: SignUpFormValues) => {
-    console.log("SIGN UP PAYLOAD:", values);
+    mutate(values);
   };
 
   return (
@@ -115,8 +138,12 @@ export const SignUpForm = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Sign Up
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? (
+                <Loader className="size-4 animate-spin" />
+              ) : (
+                "Sign Up"
+              )}
             </Button>
 
             <p className="text-sm text-muted-foreground">
@@ -124,6 +151,7 @@ export const SignUpForm = () => {
               <Link
                 href="/sign-in"
                 className="underline underline-offset-4 hover:text-fuchsia-500"
+                aria-disabled={isPending}
               >
                 Sign In Now
               </Link>
