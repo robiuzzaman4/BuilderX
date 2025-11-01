@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 const JWT_EXPIRATION = 7 * 24 * 60 * 60; // 7 days
 
-export async function POST(request: Request, res: Response) {
+export async function POST(request: Request) {
   try {
     // === get payload and validate ===
     const payload = await request.json();
