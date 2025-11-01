@@ -17,7 +17,7 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function dbConnect(): Promise<Mongoose> {
+async function dbConnection(): Promise<Mongoose> {
   const cache = cached!;
 
   // == if a connection is already established, reuse it instantly
@@ -51,4 +51,4 @@ async function dbConnect(): Promise<Mongoose> {
   return cache.conn;
 }
 
-export default dbConnect;
+export default dbConnection;

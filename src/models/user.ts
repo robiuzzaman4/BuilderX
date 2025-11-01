@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
@@ -32,4 +32,4 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-export const User = model("User", userSchema);
+export const User = models.User || model("User", userSchema);
