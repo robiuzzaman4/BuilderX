@@ -1,7 +1,8 @@
 import { Schema, model, models } from "mongoose";
 import bcrypt from "bcrypt";
+import { TUser } from "@/types/user";
 
-const userSchema = new Schema(
+const userSchema = new Schema<TUser>(
   {
     name: {
       type: String,
@@ -17,6 +18,11 @@ const userSchema = new Schema(
       required: [true, "Password is required"],
       minlength: [6, "Password must be at least 6 characters"],
       select: false,
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
     },
   },
   {

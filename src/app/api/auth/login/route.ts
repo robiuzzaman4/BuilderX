@@ -54,6 +54,7 @@ export async function POST(request: Request) {
     const jwtPayload = {
       _id: existingUser._id,
       email: existingUser.email,
+      role: existingUser.role,
     };
 
     // === generate token ===
