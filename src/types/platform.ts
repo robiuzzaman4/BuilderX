@@ -1,7 +1,7 @@
 import { TUser } from "@/types/user";
 
 export type TComponentInstance = {
-  _id: string;
+  _id?: string;
   type: string;
   componentId: string;
   order: number;
