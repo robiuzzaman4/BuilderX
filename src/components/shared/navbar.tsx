@@ -59,7 +59,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="h-14 w-full fixed top-0 bg-background border-b">
+    <nav className="h-14 w-full fixed top-0 bg-background border-b z-50">
       <div className="h-full w-full max-w-7xl mx-auto px-4 flex items-center justify-between gap-4">
         <Link
           href="/dashboard"
