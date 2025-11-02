@@ -13,7 +13,10 @@ import {
   DragOverlay,
   DragStartEvent,
 } from "@dnd-kit/core";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { ComponentList } from "@/components/builder/component-list";
 import { PreviewArea } from "@/components/builder/preview-area";
 import { useState } from "react";
@@ -68,48 +71,52 @@ const BuilderPage = () => {
   };
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-    >
-      <div className="bg-muted h-full w-full grid lg:grid-cols-2 gap-4 px-4 py-4">
-        {/* left part */}
-        <div className="h-full px-4 py-2 rounded-lg bg-background border overflow-y-auto">
-          <h2 className="text-lg font-semibold mb-4">Components</h2>
-          <ComponentList />
-        </div>
-
-        {/* right part */}
-        <div className="h-full rounded-lg bg-background border flex flex-col">
-          <div className="px-4 py-2 border-b flex items-center justify-between gap-4">
-            <p className="text-sm font-medium">Preview</p>
-            <Button size="sm" onClick={handleSave}>
-              Save
-            </Button>
+    <div className="bg-muted">
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <div className="h-full w-full grid lg:grid-cols-2 gap-4 px-4 py-4">
+          {/* left part */}
+          <div className="h-full px-4 py-2 rounded-lg bg-background border overflow-y-auto">
+            <h2 className="text-lg font-semibold mb-4">Components</h2>
+            <ComponentList />
           </div>
-          <div className="flex-1 overflow-y-auto">
-            <SortableContext
-              items={pageStructure.map((c) => c._id as string)}
-              strategy={verticalListSortingStrategy}
-            >
-              <PreviewArea />
-            </SortableContext>
-          </div>
-        </div>
-      </div>
 
-      <DragOverlay>
-        {activeId && activeId.startsWith("registry-") && (
-          <div className="border rounded-lg p-3 bg-background shadow-lg">
-            <div className="aspect-video bg-muted rounded mb-2 flex items-center justify-center">
-              <span className="text-xs text-muted-foreground">Dragging...</span>
+          {/* right part */}
+          <div className="h-full rounded-lg bg-background border flex flex-col">
+            <div className="px-4 py-2 border-b flex items-center justify-between gap-4">
+              <p className="text-sm font-medium">Preview</p>
+              <Button size="sm" onClick={handleSave}>
+                Save
+              </Button>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              <SortableContext
+                items={pageStructure.map((c) => c._id as string)}
+                strategy={verticalListSortingStrategy}
+              >
+                <PreviewArea />
+              </SortableContext>
             </div>
           </div>
-        )}
-      </DragOverlay>
-    </DndContext>
+        </div>
+
+        <DragOverlay>
+          {activeId && activeId.startsWith("registry-") && (
+            <div className="border rounded-lg p-3 bg-background shadow-lg">
+              <div className="aspect-video bg-muted rounded mb-2 flex items-center justify-center">
+                <span className="text-xs text-muted-foreground">
+                  Dragging...
+                </span>
+              </div>
+            </div>
+          )}
+        </DragOverlay>
+      </DndContext>
+    </div>
   );
 };
 

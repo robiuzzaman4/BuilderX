@@ -68,7 +68,7 @@ function SortableComponentInstance({ instance, onRemove }: any) {
     <div
       ref={setNodeRef}
       style={style}
-      className="relative group border rounded-lg overflow-hidden bg-white"
+      className="relative group border rounded-lg overflow-hidden"
     >
       {/* Control Bar */}
       <div className="absolute top-2 right-2 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition">
