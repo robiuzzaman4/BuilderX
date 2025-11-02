@@ -11,6 +11,7 @@ import { Suspense, useState } from "react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { TPlatform } from "@/types/platform";
+import { BASE_URL } from "@/constant";
 
 const DashboardPageComponent = () => {
   const { data } = useMe();
@@ -25,16 +26,20 @@ const DashboardPageComponent = () => {
   return (
     <>
       <div className="max-w-7xl mx-auto px-4 pt-4 space-y-6">
-        <h1 className="text-xl font-medium border-b pb-4">
-          Welcome Back {data?.user?.name}!
+        <h1 className="text-xl font-medium border-b pb-4 border-dashed">
+          Welcome Back {data?.user?.name} 👋
         </h1>
+
+        <h2 className="text-sm text-center font-medium bg-muted h-9 flex items-center justify-center">
+          Manage Your Platforms
+        </h2>
 
         {isLoading ? (
           <div className="flex items-center justify-center h-60">
             <Loader className="size-4 animate-spin" />
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
             {/* Create New Platform Button */}
             <Card
               onClick={() => setOpen(true)}
@@ -65,9 +70,10 @@ const DashboardPageComponent = () => {
                         <Badge variant="orange">Un Published</Badge>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground truncate">
-                      /{platform?.slug}
-                    </p>
+                    <div className="text-xs text-muted-foreground truncate">
+                      <p>Domain:</p>
+                      <p className="text-foreground">{`${BASE_URL}/platform/${platform?.slug}`}</p>
+                    </div>
                   </CardHeader>
 
                   <CardContent className="space-y-2">

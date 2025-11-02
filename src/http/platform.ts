@@ -10,6 +10,10 @@ export const platformApi = {
     const { data } = await axios.get(`/api/platform/${platformId}`);
     return data;
   },
+  getPlatformBySlug: async (slug: string) => {
+    const { data } = await axios.get(`/api/platform/published/${slug}`);
+    return data;
+  },
   updatePlatform: async (platformId: string, payload: Partial<TPlatform>) => {
     const { data } = await axios.put(`/api/platform/${platformId}`, payload);
     return data;
