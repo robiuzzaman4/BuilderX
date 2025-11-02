@@ -25,6 +25,8 @@ import { platformApi } from "@/http/platform";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
 import { useParams } from "next/navigation";
+import { TPlatform } from "@/types/platform";
+import { queryClient } from "@/providers/query-provider";
 
 const BuilderPageComponent = () => {
   const params = useParams();
@@ -45,13 +47,14 @@ const BuilderPageComponent = () => {
     queryFn: () => platformApi.getPlatformById(platformId),
     enabled: !!platformId,
   });
+  const platform: TPlatform = platformData?.platform;
 
   // === load platform data into state on mount ===
   useEffect(() => {
-    if (platformData?.platform?.pageStructure) {
-      setInitialPageStructure(platformData.platform.pageStructure);
+    if (platform?.pageStructure) {
+      setInitialPageStructure(platform.pageStructure);
     }
-  }, [platformData, setInitialPageStructure]);
+  }, [platform, setInitialPageStructure]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -71,7 +74,7 @@ const BuilderPageComponent = () => {
 
     if (!over) return;
 
-    // Check if dragging from registry to preview area
+    // check if dragging from registry to preview area
     if (active.id.toString().startsWith("registry-")) {
       const componentId = active.id.toString().replace("registry-", "");
       const allComponents = Object.values(componentRegistry).flat();
@@ -83,7 +86,7 @@ const BuilderPageComponent = () => {
       return;
     }
 
-    // Reordering within preview
+    // reordering within preview
     if (active.id !== over.id && !over.id.toString().startsWith("registry-")) {
       reorderComponents(active.id.toString(), over.id.toString());
     }
@@ -115,6 +118,37 @@ const BuilderPageComponent = () => {
     };
 
     updateMutation.mutate(payload);
+  };
+
+  // === publish platform mutation ===
+  const publishMutation = useMutation({
+    mutationFn: ({
+      platformId,
+      isPublished,
+    }: {
+      platformId: string;
+      isPublished: boolean;
+    }) => platformApi.publishPlatform(platformId, isPublished),
+    onSuccess: (response) => {
+      toast.success(
+        response.platform.isPublished
+          ? "Platform published successfully!"
+          : "Platform unpublished successfully!"
+      );
+      // Refetch platform data to update UI
+      queryClient.invalidateQueries({ queryKey: ["platform", platformId] });
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || "Failed to publish platform!"
+      );
+    },
+  });
+
+  // === handle publish toggle ===
+  const handlePublishToggle = () => {
+    const newPublishState = !platform?.isPublished;
+    publishMutation.mutate({ platformId, isPublished: newPublishState });
   };
 
   const isPending = updateMutation.isPending || isLoading;
@@ -151,19 +185,52 @@ const BuilderPageComponent = () => {
                   {platformData?.platform?.name}
                 </p>
               </div>
-              <Button
-                size="sm"
-                onClick={handleSave}
-                disabled={!hasChanges || isPending}
-              >
-                {isPending ? (
-                  <>
-                    <Loader className="size-4 animate-spin" /> Saving..
-                  </>
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSave}
+                  disabled={!hasChanges || isPending}
+                >
+                  {isPending ? (
+                    <>
+                      <Loader className="size-4 animate-spin" /> Saving..
+                    </>
+                  ) : (
+                    "Save"
+                  )}
+                </Button>
+                {platform?.isPublished ? (
+                  <Button
+                    size="sm"
+                    onClick={handlePublishToggle}
+                    disabled={publishMutation.isPending || hasChanges}
+                  >
+                    {publishMutation.isPending ? (
+                      <>
+                        <Loader className="size-4 animate-spin" /> Un
+                        Publishing..
+                      </>
+                    ) : (
+                      "Un Publish"
+                    )}
+                  </Button>
                 ) : (
-                  "Save"
+                  <Button
+                    size="sm"
+                    onClick={handlePublishToggle}
+                    disabled={publishMutation.isPending || hasChanges}
+                  >
+                    {publishMutation.isPending ? (
+                      <>
+                        <Loader className="size-4 animate-spin" /> Publishing..
+                      </>
+                    ) : (
+                      "Publish"
+                    )}
+                  </Button>
                 )}
-              </Button>
+              </div>
             </div>
             <div className="flex-1 overflow-y-auto">
               <SortableContext

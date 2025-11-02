@@ -18,4 +18,10 @@ export const platformApi = {
     const { data } = await axios.get("/api/platform");
     return data;
   },
+  publishPlatform: async (platformId: string, isPublished: boolean) => {
+    const { data } = await axios.patch(`/api/platform/${platformId}`, {
+      isPublished,
+    });
+    return data;
+  },
 };
