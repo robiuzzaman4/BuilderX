@@ -19,16 +19,23 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { TPlatform } from "@/types/platform";
 import { BASE_URL } from "@/constant";
+import { useRouter } from "next/navigation";
 
 const DashboardPageComponent = () => {
   const { data } = useMe();
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   // === fetch user platforms ===
   const { data: platformsData, isLoading } = useQuery({
     queryKey: ["platforms"],
     queryFn: platformApi.getAllPlatforms,
   });
+
+  // === handle naviagte edit platform page ===
+  const handleNavigate = (id: string) => {
+    router.push(`/dashboard/builder/${id}`);
+  };
 
   return (
     <>
@@ -60,9 +67,9 @@ const DashboardPageComponent = () => {
 
             {/* Platform Cards */}
             {platformsData?.data?.map((platform: TPlatform) => (
-              <Link
+              <div
                 key={platform?._id}
-                href={`/dashboard/builder/${platform?._id}`}
+                onClick={() => handleNavigate(platform?._id)}
                 className="block"
               >
                 <Card className="min-h-72 hover:shadow-lg transition cursor-pointer group border-dashed hover:border-blue-500">
@@ -123,7 +130,7 @@ const DashboardPageComponent = () => {
                     </a>
                   </CardContent>
                 </Card>
-              </Link>
+              </div>
             ))}
           </div>
         )}
