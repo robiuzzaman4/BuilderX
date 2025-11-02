@@ -17,9 +17,4 @@ export const authApi = {
     const { data } = await axios.post("/api/auth/sign-out");
     return data;
   },
-  
-  me: async () => {
-    const { data } = await axios.get("/api/auth/me");
-    return data;
-  },
 };

@@ -20,6 +20,7 @@ import { useMutation } from "@tanstack/react-query";
 import { authApi } from "@/http/auth";
 import { toast } from "sonner";
 import { DEFAULT_SIGN_IN_REDIRECT } from "@/constant";
+import { TriangleIcon } from "../shared/triangle-icon";
 
 const signinSchema = z.object({
   email: z.string().email("Invalid email address").trim(),
@@ -132,12 +133,18 @@ export const SignInForm = () => {
               Don't have an account?{" "}
               <Link
                 href="/sign-up"
-                className="underline underline-offset-4 hover:text-fuchsia-500"
+                className="underline underline-offset-4 hover:text-blue-500"
                 aria-disabled={isPending}
               >
                 Sign Up Now
               </Link>
             </p>
+
+            {/* triangles */}
+            <TriangleIcon className="absolute -top-px -left-px" />
+            <TriangleIcon className="absolute -top-px -right-px rotate-90" />
+            <TriangleIcon className="absolute -bottom-px -left-px -rotate-90" />
+            <TriangleIcon className="absolute -bottom-px -right-px -rotate-180" />
           </div>
         </form>
       </Form>
