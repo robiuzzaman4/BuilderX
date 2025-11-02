@@ -20,6 +20,7 @@ import { useMutation } from "@tanstack/react-query";
 import { authApi } from "@/http/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { TriangleIcon } from "../shared/triangle-icon";
 
 const signUpSchema = z.object({
   name: z.string().min(1, "Name is required").trim(),
@@ -150,12 +151,18 @@ export const SignUpForm = () => {
               Already have an account?{" "}
               <Link
                 href="/sign-in"
-                className="underline underline-offset-4 hover:text-fuchsia-500"
+                className="underline underline-offset-4 hover:text-blue-500"
                 aria-disabled={isPending}
               >
                 Sign In Now
               </Link>
             </p>
+
+            {/* triangles */}
+            <TriangleIcon className="absolute -top-px -left-px" />
+            <TriangleIcon className="absolute -top-px -right-px rotate-90" />
+            <TriangleIcon className="absolute -bottom-px -left-px -rotate-90" />
+            <TriangleIcon className="absolute -bottom-px -right-px -rotate-180" />
           </div>
         </form>
       </Form>

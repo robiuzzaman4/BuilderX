@@ -5,7 +5,14 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useMe } from "@/hooks/use-me";
 import { platformApi } from "@/http/platform";
 import { useQuery } from "@tanstack/react-query";
-import { Loader, Plus, Calendar, ArrowRight, Edit } from "lucide-react";
+import {
+  Loader,
+  Plus,
+  Calendar,
+  ArrowRight,
+  Edit,
+  ArrowUpRight,
+} from "lucide-react";
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { format } from "date-fns";
@@ -98,10 +105,22 @@ const DashboardPageComponent = () => {
                         "MMM dd, yyyy"
                       )}
                     </div>
-                    <div className="bg-muted px-4 rounded-md h-9 flex items-center justify-between text-muted-foreground">
-                      <p className="text-xs font-medium">Update</p>
-                      <Edit className="size-4" />
-                    </div>
+
+                    <a
+                      href={`${BASE_URL}/platform/${platform?.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                      }}
+                      className="bg-muted px-4 rounded-md h-9 flex items-center justify-between text-muted-foreground border border-dashed border-transparent hover:border-blue-500"
+                    >
+                      <p className="text-xs font-medium">Visit Live Url</p>
+                      <ArrowUpRight className="size-4" />
+                    </a>
                   </CardContent>
                 </Card>
               </Link>
