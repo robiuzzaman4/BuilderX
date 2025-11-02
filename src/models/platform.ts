@@ -40,8 +40,9 @@ const platformSchema = new Schema<TPlatform>(
     },
     slug: {
       type: String,
-      required: [true, "Slug is required"],
-      unique: true,
+      default: "",
+      trim: true,
+      lowercase: true,
       index: true,
     },
     isPublished: {
@@ -73,6 +74,16 @@ const platformSchema = new Schema<TPlatform>(
   },
   {
     timestamps: true,
+  }
+);
+
+// === create unique sparse index for non-empty slugs ===
+platformSchema.index(
+  { slug: 1 },
+  {
+    unique: true,
+    sparse: true, // only index documents where slug exists and is not empty
+    partialFilterExpression: { slug: { $ne: "" } },
   }
 );
 

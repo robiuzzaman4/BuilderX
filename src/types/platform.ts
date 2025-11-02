@@ -17,7 +17,7 @@ export type TPlatform = {
   _id: string;
   user: TUser;
   name: string;
-  slug: string;
+  slug?: string;
   isPublished: boolean;
   pageStructure: TComponentInstance[];
   thumbnail?: string;
