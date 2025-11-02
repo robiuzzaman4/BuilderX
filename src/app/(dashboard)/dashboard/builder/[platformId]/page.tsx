@@ -19,19 +19,40 @@ import {
 } from "@dnd-kit/sortable";
 import { ComponentList } from "@/components/builder/component-list";
 import { PreviewArea } from "@/components/builder/preview-area";
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { platformApi } from "@/http/platform";
 import { toast } from "sonner";
-import { useMe } from "@/hooks/use-me";
 import { Loader } from "lucide-react";
+import { useParams } from "next/navigation";
 
 const BuilderPage = () => {
-  // === get current user ===
-  const { data } = useMe();
+  const params = useParams();
+  const platformId = params.platformId as string;
 
-  const { pageStructure, addComponent, reorderComponents } = useBuilderStore();
+  const {
+    initialPageStructure,
+    pageStructure,
+    hasChanges,
+    addComponent,
+    reorderComponents,
+    setInitialPageStructure,
+  } = useBuilderStore();
   const [activeId, setActiveId] = useState<string | null>(null);
+
+  // === fetch platform data ===
+  const { data: platformData, isLoading } = useQuery({
+    queryKey: ["platform", platformId],
+    queryFn: () => platformApi.getPlatformById(platformId),
+    enabled: !!platformId,
+  });
+
+  // === load platform data into state on mount ===
+  useEffect(() => {
+    if (platformData?.platform?.pageStructure) {
+      setInitialPageStructure(platformData.platform.pageStructure);
+    }
+  }, [platformData, setInitialPageStructure]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -69,16 +90,20 @@ const BuilderPage = () => {
     }
   };
 
-  // === create builder mutation ===
-  const { mutate, isPending } = useMutation({
-    mutationFn: platformApi.createPlatform,
-    onSuccess: () => {
-      toast.success("Saved changes!");
+  // === update platform mutation ===
+  const updateMutation = useMutation({
+    mutationFn: (payload: any) =>
+      platformApi.updatePlatform(platformId, payload),
+    onSuccess: (response) => {
+      setInitialPageStructure(response.platform.pageStructure);
+      toast.success("Platform updated successfully!");
+      console.log("Updated Platform:", response.platform);
     },
     onError: (error: any) => {
       console.log("err", error);
       toast.error(
-        error?.response?.data?.message || "Failed to saved! Try again."
+        error?.response?.data?.message ||
+          "Failed to update platform! Try again."
       );
     },
   });
@@ -86,16 +111,24 @@ const BuilderPage = () => {
   // === handle save platform ===
   const handleSave = () => {
     const payload = {
-      name: `${data?.user?.name}-projects`,
       pageStructure: pageStructure.map(({ _id, ...rest }) => ({
         ...rest,
       })),
     };
 
-    console.log("payload: ", payload);
-
-    mutate(payload);
+    console.log("Update Payload:", payload);
+    updateMutation.mutate(payload);
   };
+
+  const isPending = updateMutation.isPending || isLoading;
+
+  if (isLoading) {
+    return (
+      <div className="bg-muted h-full w-full flex items-center justify-center">
+        <Loader className="size-8 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-muted">
@@ -115,8 +148,17 @@ const BuilderPage = () => {
           {/* right part */}
           <div className="h-full rounded-lg bg-background border flex flex-col">
             <div className="px-4 py-2 border-b flex items-center justify-between gap-4">
-              <p className="text-sm font-medium">Preview</p>
-              <Button size="sm" onClick={handleSave} disabled={isPending}>
+              <div>
+                <p className="text-sm font-medium">Preview</p>
+                <p className="text-xs text-muted-foreground">
+                  {platformData?.platform?.name}
+                </p>
+              </div>
+              <Button
+                size="sm"
+                onClick={handleSave}
+                disabled={!hasChanges || isPending}
+              >
                 {isPending ? (
                   <>
                     <Loader className="size-4 animate-spin" /> Saving..
