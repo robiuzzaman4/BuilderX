@@ -1,12 +1,12 @@
 "use client";
 
-import { authApi } from "@/http/auth";
+import { userApi } from "@/http/user";
 import { useQuery } from "@tanstack/react-query";
 
 export function useMe() {
   return useQuery({
     queryKey: ["ME"],
-    queryFn: () => authApi.me(),
+    queryFn: () => userApi.me(),
     retry: false,
   });
 }
