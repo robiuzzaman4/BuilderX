@@ -1,36 +1,198 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BuilderX LMS - Drag & Drop Learning Management System
 
-## Getting Started
+Build Your Learning Platform in Minutes
+Drag, drop, and deploy. No coding required. Create stunning online courses and manage learners effortlessly with our intuitive platform builder.
 
-First, run the development server:
+**Live Demo:** [https://builderlms.vercel.app](https://builderlms.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Drag & Drop Page Builder** - Intuitive interface to create platform by dragging components
+- **User Authentication** - Secure JWT-based authentication with bcrypt password hashing
+- **Platform Create and Management** - Create, edit, publish, and manage multiple platforms
+- **Real-time Updates** - Instant feedback and state synchronization
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠 Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+### Frontend
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js 16** - React framework with App Router
+- **React 19.2** - UI library with latest features
+- **TypeScript** - Type-safe development
+- **Tailwind CSS v4** - Utility-first CSS framework
+- **Radix UI** - Accessible component primitives
+- **React Hook Form** - Efficient form state management
+- **Zod** - TypeScript-first schema validation
+- **Lucide React** - Beautiful, consistent icons
+- **Sonner** - Toast notifications
+- **@dnd-kit** - Drag and drop functionality
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Backend
 
-## Deploy on Vercel
+- **Next.js API Routes** - Serverless backend
+- **MongoDB** - NoSQL database with Mongoose ODM
+- **JWT** - Secure token-based authentication
+- **Axios** - HTTP client for API calls
+- **Zod** - Runtime schema validation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### State & Data Management
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Zustand** - Lightweight state management
+- **React Query** - Server state management and caching
+- **React Hook Form** - Form state management
+
+### Development & Tooling
+
+- **Biome** - Fast linter and formatter
+- **React Compiler** - Next.js 16 compiler optimization
+- **Tailwind CSS v4** - Latest CSS framework with improved performance
+- **TypeScript 5** - Latest TypeScript features
+
+### Deployment
+
+- **Vercel** - Optimized Next.js hosting platform
+
+---
+
+## 📁 Project Structure
+
+\`\`\`
+builderx/
+├── src/
+│ ├── app/
+│ │ ├── (auth)/ # Authentication pages (login, signup)
+│ │ ├── (dashboard)/ # Protected dashboard routes
+│ │ ├── (platform)/ # Platform-specific routes
+│ │ ├── api/ # API route handlers
+│ │ ├── globals.css # Global styles & Tailwind config
+│ │ ├── layout.tsx # Root layout component
+│ │ └── page.tsx # Home page
+│ ├── components/
+│ │ ├── builder/ # Course builder components
+│ │ ├── forms/ # Reusable form components
+│ │ ├── ui/ # shadcn UI components
+│ │ ├── registry/ # Component registry
+│ │ └── shared/ # Shared utility components
+│ ├── config/ # Configuration files
+│ ├── constant/ # Application constants
+│ ├── hooks/ # Custom React hooks
+│ ├── http/ # API client setup
+│ ├── lib/ # Utility functions
+│ ├── models/ # MongoDB schemas
+│ ├── providers/ # React context providers
+│ ├── store/ # Zustand stores
+│ └── types/ # TypeScript type definitions
+├── public/
+│ ├── thumbnails/ # Image assets
+│ └── triangle.svg # SVG assets
+├── .env.local # Environment variables (local)
+├── biome.json # Biome linter config
+├── components.json # Component registry
+├── next.config.ts # Next.js configuration
+├── tailwind.config.ts # Tailwind CSS configuration
+├── tsconfig.json # TypeScript configuration
+├── package.json # Dependencies & scripts
+└── README.md # This file
+\`\`\`
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js** 18.17 or higher
+- **npm**, **yarn**, **pnpm**, or **bun**
+- **MongoDB** database (local or cloud)
+
+### Installation
+
+1. **Clone the repository**
+   \`\`\`bash
+   git clone https://github.com/yourusername/builderx.git
+   cd builderx
+   \`\`\`
+
+2. **Install dependencies**
+   \`\`\`bash
+   npm install
+   \`\`\`
+
+3. **Set up environment variables**
+   \`\`\`bash
+   cp .env.example .env.local
+   \`\`\`
+   Fill in your environment variables (see [Environment Variables](#environment-variables) section)
+
+4. **Start the development server**
+   \`\`\`bash
+   npm run dev
+   \`\`\`
+
+5. **Open in browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🔑 Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+\`\`\`env
+
+# Database
+
+MONGODB_URI=your_mongodb_connection_string
+
+# Authentication
+
+JWT_SECRET=your_jwt_secret_key_here
+JWT_EXPIRE=7d
+\`\`\`
+
+## 📝 Available Scripts
+
+| Command          | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| `npm run dev`    | Start development server (http://localhost:3000) |
+| `npm run build`  | Build for production                             |
+| `npm start`      | Start production server                          |
+| `npm run lint`   | Run Biome linter                                 |
+| `npm run format` | Format code with Biome                           |
+
+## 🏗 Project Architecture
+
+### Authentication Flow
+
+1. User registers/logs in via `/auth` routes
+2. JWT token is issued and stored securely
+3. Protected routes check token validity via middleware
+4. API requests include JWT in Authorization header
+
+### Create Plaform Flow
+
+1. Sign In & create platform by entering name and slug of this platform
+2. Uses drag-and-drop builder to add components
+3. Components data structure are stored in MongoDB via API
+4. Platform is now ready to publish and use it
+
+### Data Flow
+
+\`\`\`
+Client (React Component)
+↓
+State Management (Zustand/React Query)
+↓
+API Routes (Next.js)
+↓
+Database (MongoDB)
+\`\`\`
+
+## 🎨 Design System
+
+- **Color Scheme**: Blue-500 primary with clean, minimal light mode
+- **Typography**: Clean, readable fonts optimized for learning platforms
+- **Components**: Built with Radix UI for accessibility
+- **Responsive**: Mobile-first approach using Tailwind CSS
