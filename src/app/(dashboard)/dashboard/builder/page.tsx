@@ -20,8 +20,16 @@ import {
 import { ComponentList } from "@/components/builder/component-list";
 import { PreviewArea } from "@/components/builder/preview-area";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { platformApi } from "@/http/platform";
+import { toast } from "sonner";
+import { useMe } from "@/hooks/use-me";
+import { Loader } from "lucide-react";
 
 const BuilderPage = () => {
+  // === get current user ===
+  const { data } = useMe();
+
   const { pageStructure, addComponent, reorderComponents } = useBuilderStore();
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -61,13 +69,32 @@ const BuilderPage = () => {
     }
   };
 
+  // === create builder mutation ===
+  const { mutate, isPending } = useMutation({
+    mutationFn: platformApi.createPlatform,
+    onSuccess: () => {
+      toast.success("Saved changes!");
+    },
+    onError: (error: any) => {
+      console.log("err", error);
+      toast.error(
+        error?.response?.data?.message || "Failed to saved! Try again."
+      );
+    },
+  });
+
+  // === handle save platform ===
   const handleSave = () => {
-    console.log("API Payload:", {
+    const payload = {
+      name: `${data?.user?.name}-projects`,
       pageStructure: pageStructure.map(({ _id, ...rest }) => ({
         ...rest,
-        _id: _id?.startsWith("temp-") ? undefined : _id, // Remove temp IDs
       })),
-    });
+    };
+
+    console.log("payload: ", payload);
+
+    mutate(payload);
   };
 
   return (
@@ -89,8 +116,14 @@ const BuilderPage = () => {
           <div className="h-full rounded-lg bg-background border flex flex-col">
             <div className="px-4 py-2 border-b flex items-center justify-between gap-4">
               <p className="text-sm font-medium">Preview</p>
-              <Button size="sm" onClick={handleSave}>
-                Save
+              <Button size="sm" onClick={handleSave} disabled={isPending}>
+                {isPending ? (
+                  <>
+                    <Loader className="size-4 animate-spin" /> Saving..
+                  </>
+                ) : (
+                  "Save"
+                )}
               </Button>
             </div>
             <div className="flex-1 overflow-y-auto">
