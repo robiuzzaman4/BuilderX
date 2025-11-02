@@ -94,7 +94,7 @@ export const Navbar = () => {
             <Button
               size="icon"
               variant="outline"
-              className="rounded-full text-cyan-500 size-7"
+              className="rounded-full size-7"
             >
               <User />
             </Button>

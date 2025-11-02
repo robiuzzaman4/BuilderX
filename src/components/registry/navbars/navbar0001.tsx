@@ -1,14 +1,11 @@
 export function Navbar0001({
-  logo = "/logo.png",
   links = ["Home", "Courses", "About", "Contact"],
   bgColor = "#ffffff",
 }) {
   return (
     <nav style={{ backgroundColor: bgColor }} className="shadow-md">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <img src={logo} alt="Logo" className="h-10 w-auto" />
-        </div>
+        <p className="text-base font-medium cursor-pointer">BuilderX LMS</p>
         <ul className="flex gap-6">
           {links.map((link, index) => (
             <li key={index}>

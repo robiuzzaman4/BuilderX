@@ -1,5 +1,6 @@
 import { Footer0001 } from "./footer/footer0001";
-import Hero0001 from "./hero/hero0001";
+import { Hero0001 } from "./hero/hero0001";
+import { Hero0002 } from "./hero/hero0002";
 import { Navbar0001 } from "./navbars/navbar0001";
 import { Navbar0002 } from "./navbars/navbar0002";
 import { CourseSection0001 } from "./sections/courser-section-0001";
@@ -27,7 +28,6 @@ export const componentRegistry: Record<string, TRegistryComponent[]> = {
       thumbnail: "/thumbnails/navbar0001.png",
       component: Navbar0001,
       defaultProps: {
-        logo: "/logo.png",
         links: ["Home", "Courses", "About", "Contact"],
         bgColor: "#ffffff",
       },
@@ -44,7 +44,6 @@ export const componentRegistry: Record<string, TRegistryComponent[]> = {
       thumbnail: "/thumbnails/navbar0002.png",
       component: Navbar0002,
       defaultProps: {
-        logo: "/logo.png",
         links: ["Home", "Courses", "About", "Contact"],
         bgColor: "#1f2937",
       },
@@ -80,7 +79,7 @@ export const componentRegistry: Record<string, TRegistryComponent[]> = {
       type: "hero",
       name: "Hero with Stats",
       thumbnail: "/thumbnails/hero0002.png",
-      component: Hero0001,
+      component: Hero0002,
       defaultProps: {
         title: "Transform Your Career",
         subtitle: "Join 10,000+ students learning the skills of tomorrow",
@@ -111,7 +110,7 @@ export const componentRegistry: Record<string, TRegistryComponent[]> = {
             title: "Web Development Bootcamp",
             instructor: "John Doe",
             price: "$99",
-            image: "/course1.jpg",
+            image: "/default_bg.jpg",
             rating: 4.8,
           },
           {
@@ -119,7 +118,7 @@ export const componentRegistry: Record<string, TRegistryComponent[]> = {
             title: "Data Science Fundamentals",
             instructor: "Jane Smith",
             price: "$129",
-            image: "/course2.jpg",
+            image: "/default_bg.jpg",
             rating: 4.9,
           },
           {
@@ -127,7 +126,7 @@ export const componentRegistry: Record<string, TRegistryComponent[]> = {
             title: "Mobile App Development",
             instructor: "Mike Johnson",
             price: "$119",
-            image: "/course3.jpg",
+            image: "/default_bg.jpg",
             rating: 4.7,
           },
           {
@@ -135,7 +134,7 @@ export const componentRegistry: Record<string, TRegistryComponent[]> = {
             title: "UI/UX Design Masterclass",
             instructor: "Sarah Williams",
             price: "$89",
-            image: "/course4.jpg",
+            image: "/default_bg.jpg",
             rating: 4.8,
           },
         ],

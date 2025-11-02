@@ -1,5 +1,4 @@
 export function Navbar0002({
-  logo = "/logo.png",
   links = ["Home", "Courses", "About", "Contact"],
   bgColor = "#1f2937",
 }) {
@@ -8,7 +7,6 @@ export function Navbar0002({
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src={logo} alt="Logo" className="h-12 w-auto" />
             <span className="text-white text-xl font-bold">EduPlatform</span>
           </div>
           <ul className="flex gap-8">

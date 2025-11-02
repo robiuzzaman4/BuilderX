@@ -8,7 +8,7 @@ const DashboardPage = () => {
   const { data } = useMe();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 mt-18 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 pt-4 space-y-6">
       <h1 className="text-xl font-medium border-b pb-4">
         Welcome Back {data?.user?.name}!
       </h1>
