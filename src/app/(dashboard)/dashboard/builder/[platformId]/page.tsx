@@ -19,19 +19,18 @@ import {
 } from "@dnd-kit/sortable";
 import { ComponentList } from "@/components/builder/component-list";
 import { PreviewArea } from "@/components/builder/preview-area";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { platformApi } from "@/http/platform";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
 import { useParams } from "next/navigation";
 
-const BuilderPage = () => {
+const BuilderPageComponent = () => {
   const params = useParams();
   const platformId = params.platformId as string;
 
   const {
-    initialPageStructure,
     pageStructure,
     hasChanges,
     addComponent,
@@ -97,7 +96,6 @@ const BuilderPage = () => {
     onSuccess: (response) => {
       setInitialPageStructure(response.platform.pageStructure);
       toast.success("Platform updated successfully!");
-      console.log("Updated Platform:", response.platform);
     },
     onError: (error: any) => {
       console.log("err", error);
@@ -116,7 +114,6 @@ const BuilderPage = () => {
       })),
     };
 
-    console.log("Update Payload:", payload);
     updateMutation.mutate(payload);
   };
 
@@ -125,7 +122,7 @@ const BuilderPage = () => {
   if (isLoading) {
     return (
       <div className="bg-muted h-full w-full flex items-center justify-center">
-        <Loader className="size-8 animate-spin" />
+        <Loader className="size-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -192,6 +189,20 @@ const BuilderPage = () => {
         </DragOverlay>
       </DndContext>
     </div>
+  );
+};
+
+const BuilderPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="bg-muted h-full w-full flex items-center justify-center">
+          <Loader className="size-6 animate-spin text-muted-foreground" />
+        </div>
+      }
+    >
+      <BuilderPageComponent />
+    </Suspense>
   );
 };
 

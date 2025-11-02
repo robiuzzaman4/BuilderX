@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useMe } from "@/hooks/use-me";
 import { platformApi } from "@/http/platform";
 import { useQuery } from "@tanstack/react-query";
-import { Loader, Plus, Calendar } from "lucide-react";
+import { Loader, Plus, Calendar, ArrowRight, Edit } from "lucide-react";
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { format } from "date-fns";
@@ -38,7 +38,7 @@ const DashboardPageComponent = () => {
             {/* Create New Platform Button */}
             <Card
               onClick={() => setOpen(true)}
-              className="h-60 hover:shadow-lg transition cursor-pointer group grid place-items-center border-dashed"
+              className="min-h-72 hover:shadow-lg transition cursor-pointer group grid place-items-center border-dashed hover:border-blue-500"
             >
               <div className="flex items-center justify-center gap-2 text-sm">
                 <Plus className="size-4" />
@@ -53,14 +53,14 @@ const DashboardPageComponent = () => {
                 href={`/dashboard/builder/${platform?._id}`}
                 className="block"
               >
-                <Card className="h-60 hover:shadow-lg transition cursor-pointer group border-dashed">
+                <Card className="min-h-72 hover:shadow-lg transition cursor-pointer group border-dashed hover:border-blue-500">
                   <CardHeader>
                     <div className="flex items-center justify-between gap-4">
                       <h3 className="font-semibold truncate">
                         {platform?.name}
                       </h3>
                       {platform?.isPublished ? (
-                        <Badge variant="emerald">Published</Badge>
+                        <Badge variant="blue">Published</Badge>
                       ) : (
                         <Badge variant="orange">Un Published</Badge>
                       )}
@@ -91,6 +91,10 @@ const DashboardPageComponent = () => {
                         new Date(platform?.createdAt as Date),
                         "MMM dd, yyyy"
                       )}
+                    </div>
+                    <div className="bg-muted px-4 rounded-md h-9 flex items-center justify-between text-muted-foreground">
+                      <p className="text-xs font-medium">Update</p>
+                      <Edit className="size-4" />
                     </div>
                   </CardContent>
                 </Card>

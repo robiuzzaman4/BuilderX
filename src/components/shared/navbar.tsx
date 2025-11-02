@@ -24,10 +24,6 @@ const NAVLINKS = [
     label: "Dashboard",
     path: "/dashboard",
   },
-  {
-    label: "Builder",
-    path: "/dashboard/builder",
-  },
 ];
 
 export const Navbar = () => {
@@ -65,7 +61,8 @@ export const Navbar = () => {
           href="/dashboard"
           className="text-base font-bold flex items-center gap-2"
         >
-          <SquaresSubtract className="text-cyan-500" /> <p className="hidden sm:inline-flex">BuilderX</p>
+          <SquaresSubtract className="text-blue-500" />{" "}
+          <p className="hidden sm:inline-flex">BuilderX</p>
         </Link>
 
         {/* navlinks */}

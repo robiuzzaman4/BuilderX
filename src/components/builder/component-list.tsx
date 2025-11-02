@@ -34,7 +34,7 @@ function DraggableComponent({ component }: { component: any }) {
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      className="border rounded-lg p-3 cursor-grab active:cursor-grabbing hover:border-cyan-500 transition"
+      className="border rounded-lg p-3 cursor-grab active:cursor-grabbing hover:border-blue-500 transition"
       style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       <div className="aspect-video bg-muted rounded mb-2 flex items-center justify-center">
