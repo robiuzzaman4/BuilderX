@@ -100,7 +100,7 @@ const DashboardPageComponent = () => {
                         />
                       ) : (
                         <p className="text-xs text-muted-foreground">
-                          No preview
+                          No preview available
                         </p>
                       )}
                     </div>
