@@ -5,8 +5,6 @@ Drag, drop, and deploy. No coding required. Create stunning online courses and m
 
 **Live Demo:** [https://builderlms.vercel.app](https://builderlms.vercel.app)
 
----
-
 ## 🎯 Features
 
 - **Drag & Drop Page Builder** - Intuitive interface to create platform by dragging components
@@ -14,7 +12,6 @@ Drag, drop, and deploy. No coding required. Create stunning online courses and m
 - **Platform Create and Management** - Create, edit, publish, and manage multiple platforms
 - **Real-time Updates** - Instant feedback and state synchronization
 
----
 
 ## 🛠 Tech Stack
 
@@ -56,11 +53,10 @@ Drag, drop, and deploy. No coding required. Create stunning online courses and m
 
 - **Vercel** - Optimized Next.js hosting platform
 
----
 
 ## 📁 Project Structure
 
-\`\`\`
+```
 builderx/
 ├── src/
 │ ├── app/
@@ -97,9 +93,7 @@ builderx/
 ├── tsconfig.json # TypeScript configuration
 ├── package.json # Dependencies & scripts
 └── README.md # This file
-\`\`\`
-
----
+```
 
 ## 🚀 Getting Started
 
@@ -112,26 +106,26 @@ builderx/
 ### Installation
 
 1. **Clone the repository**
-   \`\`\`bash
+   ```bash
    git clone https://github.com/yourusername/builderx.git
    cd builderx
-   \`\`\`
+   ```
 
 2. **Install dependencies**
-   \`\`\`bash
+   ```bash
    npm install
-   \`\`\`
+   ```
 
 3. **Set up environment variables**
-   \`\`\`bash
+   ```bash
    cp .env.example .env.local
-   \`\`\`
+   ```
    Fill in your environment variables (see [Environment Variables](#environment-variables) section)
 
 4. **Start the development server**
-   \`\`\`bash
+   ```bash
    npm run dev
-   \`\`\`
+   ```
 
 5. **Open in browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
@@ -140,7 +134,7 @@ builderx/
 
 Create a `.env.local` file in the root directory with the following variables:
 
-\`\`\`env
+```env
 
 # Database
 
@@ -150,7 +144,7 @@ MONGODB_URI=your_mongodb_connection_string
 
 JWT_SECRET=your_jwt_secret_key_here
 JWT_EXPIRE=7d
-\`\`\`
+```
 
 ## 📝 Available Scripts
 
@@ -180,7 +174,7 @@ JWT_EXPIRE=7d
 
 ### Data Flow
 
-\`\`\`
+```
 Client (React Component)
 ↓
 State Management (Zustand/React Query)
@@ -188,7 +182,7 @@ State Management (Zustand/React Query)
 API Routes (Next.js)
 ↓
 Database (MongoDB)
-\`\`\`
+```
 
 ## 🎨 Design System
 
