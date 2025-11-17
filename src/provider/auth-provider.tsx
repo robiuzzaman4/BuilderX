@@ -82,8 +82,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         payload.email,
         payload.password
       );
-
-      toast.success(`Sign In Successful!`);
       return { user: userCredential.user };
     } catch (err) {
       handleAuthError(err);

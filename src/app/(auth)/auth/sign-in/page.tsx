@@ -4,24 +4,37 @@ import { useAuth } from "@/provider/auth-provider";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
-// Use React.FC for functional components in TypeScript
 const SignInPage: React.FC = () => {
-  // Local state for form inputs
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  // Use the custom authentication hook
   const { signIn, isLoading } = useAuth();
 
-  // Handler for form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await signIn({ email, password });
+
       if (response?.user) {
-        router.push("/");
+        const apiResponse = await fetch("/api/sign-in", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (apiResponse.ok) {
+          router.push("/");
+          toast.success("Sign In Successful!");
+        } else {
+          const errorData = await apiResponse.json();
+          console.log("Backend user creation failed:", errorData);
+          toast.error("Failed to sign up on the server");
+        }
       }
 
       console.log("Sign In Response:", response);
@@ -40,7 +53,6 @@ const SignInPage: React.FC = () => {
           Sign In
         </h2>
 
-        {/* Email Input */}
         <div className="space-y-2">
           <label htmlFor="email-input" className="text-sm font-medium block">
             Email:
@@ -56,7 +68,6 @@ const SignInPage: React.FC = () => {
           />
         </div>
 
-        {/* Password Input */}
         <div className="space-y-2">
           <label htmlFor="password-input" className="text-sm font-medium block">
             Password:
@@ -72,11 +83,10 @@ const SignInPage: React.FC = () => {
           />
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="px-3 py-2 rounded-md bg-blue-500 text-white text-sm font-medium hover:cursor-pointer"
-          disabled={isLoading} // Disable button while loading
+          disabled={isLoading}
         >
           {isLoading ? "Signing In..." : "Sign In"}
         </button>
