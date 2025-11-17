@@ -15,7 +15,7 @@ const SignUpPage = () => {
     try {
       const response = await signUp({ email, password });
       if (response?.user) {
-        router.push("/users");
+        router.push("/");
       }
 
       console.log("Sign Up Response:", response);
@@ -42,7 +42,7 @@ const SignUpPage = () => {
           <input
             id="email-input"
             type="email"
-            className="w-full px-3 py-2 rounded-md outline-none border border-zinc-200 focus:border-orange-500 transition duration-150 text-sm"
+            className="w-full px-3 py-2 rounded-md outline-none border border-zinc-200 focus:border-blue-500 transition duration-150 text-sm"
             placeholder="Enter your email"
             required
             value={email}
@@ -58,7 +58,7 @@ const SignUpPage = () => {
           <input
             id="password-input"
             type="password"
-            className="w-full px-3 py-2 rounded-md outline-none border border-zinc-200 focus:border-orange-500 transition duration-150 text-sm"
+            className="w-full px-3 py-2 rounded-md outline-none border border-zinc-200 focus:border-blue-500 transition duration-150 text-sm"
             placeholder="Enter your password"
             required
             value={password}
@@ -69,7 +69,7 @@ const SignUpPage = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="px-3 py-2 rounded-md bg-orange-500 text-white text-sm font-medium hover:cursor-pointer"
+          className="px-3 py-2 rounded-md bg-blue-500 text-white text-sm font-medium hover:cursor-pointer"
         >
           {isLoading ? "Registering..." : "Sign Up"}
         </button>

@@ -21,7 +21,7 @@ const SignInPage: React.FC = () => {
     try {
       const response = await signIn({ email, password });
       if (response?.user) {
-        router.push("/users");
+        router.push("/");
       }
 
       console.log("Sign In Response:", response);
@@ -48,7 +48,7 @@ const SignInPage: React.FC = () => {
           <input
             id="email-input"
             type="email"
-            className="w-full px-3 py-2 rounded-md outline-none border border-zinc-200 focus:border-orange-500 transition duration-150 text-sm"
+            className="w-full px-3 py-2 rounded-md outline-none border border-zinc-200 focus:border-blue-500 transition duration-150 text-sm"
             placeholder="Enter your email"
             required
             value={email}
@@ -64,7 +64,7 @@ const SignInPage: React.FC = () => {
           <input
             id="password-input"
             type="password"
-            className="w-full px-3 py-2 rounded-md outline-none border border-zinc-200 focus:border-orange-500 transition duration-150 text-sm"
+            className="w-full px-3 py-2 rounded-md outline-none border border-zinc-200 focus:border-blue-500 transition duration-150 text-sm"
             placeholder="Enter your password"
             required
             value={password}
@@ -75,7 +75,7 @@ const SignInPage: React.FC = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="px-3 py-2 rounded-md bg-orange-500 text-white text-sm font-medium hover:cursor-pointer"
+          className="px-3 py-2 rounded-md bg-blue-500 text-white text-sm font-medium hover:cursor-pointer"
           disabled={isLoading} // Disable button while loading
         >
           {isLoading ? "Signing In..." : "Sign In"}

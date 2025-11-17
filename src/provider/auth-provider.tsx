@@ -13,6 +13,7 @@ import {
   User,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signOut,
   AuthError,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -32,6 +33,7 @@ type AuthContextType = {
   isLoading: boolean;
   signIn: (payload: AuthPayload) => Promise<AuthResponse>;
   signUp: (payload: AuthPayload) => Promise<AuthResponse>;
+  logOut: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -86,7 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-    // This line is needed to satisfy TypeScript's Promise return type in the catch block
+    // Fallback for TypeScript
     return Promise.reject(new Error("Sign in failed and error was thrown."));
   };
 
@@ -109,8 +111,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-    // This line is needed to satisfy TypeScript's Promise return type in the catch block
+    // Fallback for TypeScript
     return Promise.reject(new Error("Sign up failed and error was thrown."));
+  };
+
+  const logOut = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      await signOut(auth);
+      toast.info("You have been signed out.");
+    } catch (err) {
+      const errorMsg = (err as Error).message || "Failed to sign out.";
+      toast.error(`Sign Out Failed: ${errorMsg}`);
+      console.error("Sign Out Error:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Memoize the context value
@@ -118,8 +134,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       user,
       isLoading,
-      signIn, // Now using the direct functions
-      signUp, // Now using the direct functions
+      signIn,
+      signUp,
+      logOut,
     }),
     [user, isLoading]
   );
