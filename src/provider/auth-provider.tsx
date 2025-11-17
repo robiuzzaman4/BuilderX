@@ -19,6 +19,7 @@ import {
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { toast } from "sonner";
+import { FirebaseError } from "firebase/app";
 
 type AuthPayload = {
   name?: string;
@@ -42,6 +43,20 @@ export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
 
+const AUTH_ERROR_MAP: Record<string, string> = {
+  "auth/user-not-found": "No account exists with this email.",
+  "auth/wrong-password": "Incorrect password. Try again.",
+  "auth/invalid-email": "Invalid email format.",
+  "auth/email-already-in-use": "This email is already registered.",
+  "auth/weak-password": "Password is too weak. Use at least 6 characters.",
+  "auth/too-many-requests": "Too many failed attempts. Please try again later.",
+  "auth/network-request-failed":
+    "Network error. Please check your internet connection.",
+  "auth/invalid-credential": "Invalid email or password.",
+  "auth/user-disabled":
+    "This account has been disabled. Contact support if this is a mistake.",
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,21 +71,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const handleAuthError = (err: unknown) => {
-    const firebaseError = err as AuthError;
-    // Clean up the error message for display
-    const cleanMessage =
-      firebaseError.message
-        .replace(/Firebase: /, "")
-        .replace(/\([\s\S]*\)/, "")
-        .trim() || "Authentication Failed.";
+    if (err instanceof FirebaseError) {
+      const fbErr = err as AuthError;
 
-    toast.error(cleanMessage, {
-      description: "Please check your credentials or network connection.",
-      duration: 4000,
-    });
+      // If Firebase error code exists in our map → use friendly message
+      const codeMessage = AUTH_ERROR_MAP[fbErr.code];
 
-    // Re-throw the error so the calling component can still catch it
-    throw firebaseError;
+      // Otherwise, fallback to cleaned Firebase message
+      const fallbackMessage =
+        fbErr.message
+          .replace(/^Firebase:\s*/, "")
+          .replace(/\([^)]*\)/g, "")
+          .trim() || "Authentication failed.";
+
+      const finalMessage = codeMessage || fallbackMessage;
+
+      toast.error(finalMessage, {
+        description: "Please check your information and try again.",
+        duration: 4000,
+      });
+
+      throw fbErr; // keep the behavior for caller catch blocks
+    }
+
+    // Not a Firebase error → rethrow original
+    throw err;
   };
 
   const signIn = async (payload: AuthPayload): Promise<AuthResponse> => {
