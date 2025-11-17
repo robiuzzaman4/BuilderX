@@ -15,11 +15,13 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   AuthError,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { toast } from "sonner";
 
 type AuthPayload = {
+  name?: string;
   email: string;
   password: string;
 };
@@ -102,9 +104,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         payload.password
       );
 
-      toast.success(
-        `Sign Up Successful! Welcome, ${userCredential.user.email}.`
-      );
+      if (payload.name) {
+        await updateProfile(userCredential.user, {
+          displayName: payload.name,
+        });
+      }
+
       return { user: userCredential.user };
     } catch (err) {
       handleAuthError(err);

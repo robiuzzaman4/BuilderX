@@ -3,8 +3,10 @@ import { useAuth } from "@/provider/auth-provider";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const SignUpPage = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signUp, isLoading } = useAuth();
@@ -13,19 +15,38 @@ const SignUpPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await signUp({ email, password });
-      if (response?.user) {
-        router.push("/");
-      }
+      const response = await signUp({ name, email, password });
 
-      console.log("Sign Up Response:", response);
+      if (response?.user) {
+        const apiResponse = await fetch("/api/sign-up", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: response?.user?.displayName,
+            email,
+            password,
+            firebaseUid: response?.user?.uid,
+          }),
+        });
+
+        if (apiResponse.ok) {
+          router.push("/");
+          toast.success("Sign Up Successful!");
+        } else {
+          const errorData = await apiResponse.json();
+          console.log("Backend user creation failed:", errorData);
+          toast.error("Failed to sign up on the server");
+        }
+      }
     } catch (e) {
       console.error("Sign Up Failed:", e);
     }
   };
 
   return (
-    <section className="min-h-screen w-full grid place-items-center bg-zinc-100">
+    <section className="min-h-screen w-full grid place-items-center bg-zinc-100 px-4">
       <form
         className="w-full max-w-sm mx-auto bg-white p-6 rounded-xl border border-zinc-200 flex flex-col gap-6 shadow"
         onSubmit={handleSubmit}
@@ -34,7 +55,21 @@ const SignUpPage = () => {
           Sign Up
         </h2>
 
-        {/* Email Input Field */}
+        <div className="space-y-2">
+          <label htmlFor="name-input" className="text-sm font-medium block">
+            Name:
+          </label>
+          <input
+            id="name-input"
+            type="text"
+            className="w-full px-3 py-2 rounded-md outline-none border border-zinc-200 focus:border-blue-500 transition duration-150 text-sm"
+            placeholder="Enter your name"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
         <div className="space-y-2">
           <label htmlFor="email-input" className="text-sm font-medium block">
             Email:
@@ -50,7 +85,6 @@ const SignUpPage = () => {
           />
         </div>
 
-        {/* Password Input Field */}
         <div className="space-y-2">
           <label htmlFor="password-input" className="text-sm font-medium block">
             Password:

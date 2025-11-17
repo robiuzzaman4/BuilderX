@@ -5,6 +5,8 @@ import Link from "next/link";
 
 const HomePage = () => {
   const { user, logOut, isLoading } = useAuth();
+  console.log('loggedin user ', user);
+  
 
   if (isLoading) {
     return (
