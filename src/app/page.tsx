@@ -4,22 +4,10 @@ const HomePage = () => {
   return (
     <main className="min-h-screen w-full bg-zinc-50 flex items-center justify-center gap-6">
       <Link
-        href="/demo1"
+        href="/auth/sign-in"
         className="px-3 py-2 rounded-md bg-orange-500 text-white text-sm font-medium hover:cursor-pointer"
       >
-        Demo 1
-      </Link>
-      <Link
-        href="/demo2"
-        className="px-3 py-2 rounded-md bg-cyan-500 text-white text-sm font-medium hover:cursor-pointer"
-      >
-        Demo 2
-      </Link>
-      <Link
-        href="/demo3"
-        className="px-3 py-2 rounded-md bg-fuchsia-500 text-white text-sm font-medium hover:cursor-pointer"
-      >
-        Demo 3
+        Get Started
       </Link>
     </main>
   );
