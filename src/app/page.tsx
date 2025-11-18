@@ -1,26 +1,13 @@
-import Link from "next/link";
+import NavbarR1 from "@/components/navbars/navbar-r1";
+import NavbarR2 from "@/components/navbars/navbar-r2";
+import NavbarR3 from "@/components/navbars/navbar-r3";
 
 const HomePage = () => {
   return (
-    <main className="min-h-screen w-full bg-zinc-50 flex items-center justify-center gap-6">
-      <Link
-        href="/demo1"
-        className="px-3 py-2 rounded-md bg-orange-500 text-white text-sm font-medium hover:cursor-pointer"
-      >
-        Demo 1
-      </Link>
-      <Link
-        href="/demo2"
-        className="px-3 py-2 rounded-md bg-cyan-500 text-white text-sm font-medium hover:cursor-pointer"
-      >
-        Demo 2
-      </Link>
-      <Link
-        href="/demo3"
-        className="px-3 py-2 rounded-md bg-fuchsia-500 text-white text-sm font-medium hover:cursor-pointer"
-      >
-        Demo 3
-      </Link>
+    <main className="min-h-screen w-full bg-zinc-50">
+      <NavbarR1 />
+      <NavbarR2 />
+      <NavbarR3 />
     </main>
   );
 };
