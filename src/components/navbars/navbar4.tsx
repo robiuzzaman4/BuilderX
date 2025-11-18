@@ -3,21 +3,20 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-type NavbarProps = {
-  componentName: string;
+interface NavbarProps {
   brandName: string;
   navItems: { name: string; href: string }[];
   ctaBtn: { text: string; href: string };
-};
+}
 
-const NavbarR1 = ({
+const Navbar4 = ({
   brandName = "Brand",
   navItems = [
     { name: "Home", href: "#" },
     { name: "Features", href: "#" },
     { name: "Pricing", href: "#" },
   ],
-  ctaBtn = { text: "Get Started", href: "#" },
+  ctaBtn = { text: "Sign In", href: "#" },
 }: Partial<NavbarProps>) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -73,7 +72,7 @@ const NavbarR1 = ({
             {brandName}
           </Link>
 
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-12">
             <div className="flex space-x-6">
               {navItems.map((item) => (
                 <Link
@@ -99,4 +98,4 @@ const NavbarR1 = ({
   );
 };
 
-export default NavbarR1;
+export default Navbar4;
