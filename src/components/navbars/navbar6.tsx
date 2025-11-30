@@ -7,7 +7,7 @@ interface NavbarProps {
   brandName: string;
   navItems: { name: string; href: string }[];
   ctaBtn: { text: string; href: string };
-};
+}
 
 const Navbar6 = ({
   brandName = "Brand",
@@ -46,8 +46,9 @@ const Navbar6 = ({
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`px-4 py-2.5 text-orange-700 font-semibold hover:bg-orange-100 hover:text-orange-800 rounded-lg transition duration-200 ${i === 1 && "bg-orange-50" }`}
-                    onClick={() => setIsOpen(false)}
+                    className={`px-4 py-2.5 text-orange-700 font-semibold hover:bg-orange-100 hover:text-orange-800 rounded-lg transition duration-200 ${
+                      i === 1 && "bg-orange-50"
+                    }`}
                   >
                     {item.name}
                   </Link>
@@ -55,7 +56,6 @@ const Navbar6 = ({
                 <Link
                   href={ctaBtn.href}
                   className="px-4 py-3 mt-4 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition text-center font-bold text-base"
-                  onClick={() => setIsOpen(false)}
                 >
                   {ctaBtn.text}
                 </Link>

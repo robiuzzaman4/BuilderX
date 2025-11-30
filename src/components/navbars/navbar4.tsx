@@ -9,6 +9,29 @@ interface NavbarProps {
   ctaBtn: { text: string; href: string };
 }
 
+interface Navbar {
+  logoUrl: string;
+  logoAlt: string;
+  bgColor: string;
+  linkTextColor: string;
+  linkHoverColor: string;
+  linkFontSize: string;
+  navLinks: [
+    {
+      href: string;
+      label: string;
+    }
+  ];
+  actionButtons: [
+    {
+      href: string;
+      text: string;
+      bgColor: string;
+      textColor: string;
+    }
+  ];
+}
+
 const Navbar4 = ({
   brandName = "Brand",
   navItems = [
@@ -47,7 +70,6 @@ const Navbar4 = ({
                     key={item.name}
                     href={item.href}
                     className="px-4 py-2.5 text-teal-700 font-semibold hover:bg-teal-100 hover:text-teal-800 rounded-lg transition duration-200"
-                    onClick={() => setIsOpen(false)}
                   >
                     {item.name}
                   </Link>
@@ -55,7 +77,6 @@ const Navbar4 = ({
                 <Link
                   href={ctaBtn.href}
                   className="px-4 py-3 mt-4 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-center font-bold text-base"
-                  onClick={() => setIsOpen(false)}
                 >
                   {ctaBtn.text}
                 </Link>
